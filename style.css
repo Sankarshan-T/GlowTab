@@ -1,114 +1,139 @@
 :root {
-    --bg-main: #050b1e;
+    --bg-main: #0a0d14;
+
     --bg-panel: rgba(255, 255, 255, 0.06);
-    --bg-card: rgba(255, 255, 255, 0.08);
 
-    --glow-cyan: #4fdcff;
-    --glow-purple: #9b7cff;
+    --bg-card: rgba(255, 255, 255, 0.12);
 
-    --text-main: #e6ecff;
-    --text-muted: #9aa4c7;
+    --glow-cyan: #6fe4ff;
+    --glow-purple: #a99bff;
+
+    --text-main: #eef2ff;
+    --text-muted: #9da6c9;
 }
 
-html,body {
+
+html, body {
     margin: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at top, #0a1440, var(--bg-main));
     font-family: system-ui, -apple-system, Segoe UI, sans-serif;
     color: var(--text-main);
-    overflow: hidden;
+    background:
+        radial-gradient(circle at top, #141a3a, #07090f);
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-#dashboard {
+.center {
+    margin-top: 12vh;
+    text-align: center;
+}
+
+.clock {
+    font-size: 4.5rem;
+    font-weight: 600;
+    letter-spacing: -1px;
+}
+
+.greeting {
+    margin-top: 8px;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+}
+
+.shortcuts {
+    grid-column: 1 / -1;
+
     display: grid;
-    height: 100vh;
-    width: 100vw;
-
-    grid-template-rows: 64px 1fr;
-    grid-template-columns: 260px 1fr;
-
-    grid-template-areas:
-        "header header"
-        "sidebar content";
-
+    grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
     gap: 16px;
-    padding: 16px;
+
+    padding: 12px 6px;
 }
 
-#dashboard > * {
-    min-width: 0;
-    min-height: 0;
-}
-
-.header {
-    grid-area: header;
-    background: linear-gradient(90deg, rgba(79, 220, 255, 0.12),rgba(155, 124, 255, 0.12));
-    backdrop-filter: blur(14px);
+.shortcut {
+    text-decoration: none;
+    color: var(--text-main);
 
     display: flex;
+    flex-direction: column;
     align-items: center;
-    padding: 0 24px;
+    gap: 8px;
 
-    font-size: 1.2rem;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+    padding: 14px 8px;
+    border-radius: 16px;
 
-    box-shadow:
-        0 0 24px rgba(79, 220, 255, 0.15),
-        inset 0 0 1px rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(10px);
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
 }
 
-.sidebar {
-    grid-area: sidebar;
-    background: var(--bg-panel);
-    backdrop-filter: blur(18px);
-    border-radius: 18px;
-    padding: 20px;
-
-    box-shadow:
-        0 0 32px rgba(155, 124, 255, 0.12),
-        inset 0 0 1px rgba(255,255,255,0.15);
+.shortcut:hover {
+    background: rgba(255,255,255,0.08);
+    transform: translateY(-2px);
 }
 
-.content {
-    grid-area: content;
+.shortcut .icon {
+    font-size: 1.6rem;
+}
+
+.shortcut .label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: center;
+    white-space: nowrap;
+}
+
+
+.widgets {
+    margin-top: 64px;
+    width: min(1100px, 90vw);
 
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
 }
 
 .card {
-    background: var(--bg-card);
-    backdrop-filter: blur(16px);
-    border-radius: 20px;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(14px);
+    border-radius: 22px;
     padding: 18px;
 
-    min-height: 140px;
+    min-height: 130px;
 
     box-shadow:
-        0 8px 30px rgba(0, 0, 0, 0.35),
-        0 0 18px rgba(79, 220, 255, 0.12);
+        0 6px 20px rgba(0,0,0,0.25);
 
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
 }
 
 .card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-3px);
+    background: rgba(255,255,255,0.09);
     box-shadow:
-        0 12px 40px rgba(0, 0, 0, 0.45),
-        0 0 26px rgba(79, 220, 255, 0.35);
+        0 12px 30px rgba(0,0,0,0.35);
 }
 
 .card h3 {
-    margin: 0 0 8px;
-    font-size: 1rem;
+    margin: 0 0 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
     color: var(--glow-cyan);
 }
 
 .muted {
+    font-size: 0.85rem;
     color: var(--text-muted);
-    font-size: 0.9rem;
 }
