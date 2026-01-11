@@ -1,0 +1,1 @@
+A very cool looking new tab extension to pep up your boring old chrome home page

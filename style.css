@@ -1,16 +1,114 @@
-html, body {
+:root {
+    --bg-main: #050b1e;
+    --bg-panel: rgba(255, 255, 255, 0.06);
+    --bg-card: rgba(255, 255, 255, 0.08);
+
+    --glow-cyan: #4fdcff;
+    --glow-purple: #9b7cff;
+
+    --text-main: #e6ecff;
+    --text-muted: #9aa4c7;
+}
+
+html,body {
     margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 100vw;
-    min-height: 100vh;
-    background: #041d49;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at top, #0a1440, var(--bg-main));
+    font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+    color: var(--text-main);
+    overflow: hidden;
 }
 
 
-#widgets {
-    width: 100%;
-    height: 100%;
-    background-color: #9cc0ff;
+#dashboard {
+    display: grid;
+    height: 100vh;
+    width: 100vw;
+
+    grid-template-rows: 64px 1fr;
+    grid-template-columns: 260px 1fr;
+
+    grid-template-areas:
+        "header header"
+        "sidebar content";
+
+    gap: 16px;
+    padding: 16px;
+}
+
+#dashboard > * {
+    min-width: 0;
+    min-height: 0;
+}
+
+.header {
+    grid-area: header;
+    background: linear-gradient(90deg, rgba(79, 220, 255, 0.12),rgba(155, 124, 255, 0.12));
+    backdrop-filter: blur(14px);
+
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+
+    box-shadow:
+        0 0 24px rgba(79, 220, 255, 0.15),
+        inset 0 0 1px rgba(255,255,255,0.2);
+}
+
+.sidebar {
+    grid-area: sidebar;
+    background: var(--bg-panel);
+    backdrop-filter: blur(18px);
+    border-radius: 18px;
+    padding: 20px;
+
+    box-shadow:
+        0 0 32px rgba(155, 124, 255, 0.12),
+        inset 0 0 1px rgba(255,255,255,0.15);
+}
+
+.content {
+    grid-area: content;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px);
+    border-radius: 20px;
+    padding: 18px;
+
+    min-height: 140px;
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.35),
+        0 0 18px rgba(79, 220, 255, 0.12);
+
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.45),
+        0 0 26px rgba(79, 220, 255, 0.35);
+}
+
+.card h3 {
+    margin: 0 0 8px;
+    font-size: 1rem;
+    color: var(--glow-cyan);
+}
+
+.muted {
+    color: var(--text-muted);
+    font-size: 0.9rem;
 }
