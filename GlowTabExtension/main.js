@@ -13,7 +13,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const urlInput = document.getElementById("shortcutUrl");
   const saveBtn = document.getElementById("saveShortcut");
   const cancelBtn = document.getElementById("cancelShortcut");
-  
+  const weatherCard = document.getElementById("weather");
+
+  console.log("weatherCard:", weatherCard);
+ 
   const savedTheme = localStorage.getItem("theme");
   
   const defaultShortcuts = [
@@ -214,6 +217,38 @@ document.addEventListener("DOMContentLoaded", () => {
     if (q) window.location.href =
       `https://www.google.com/search?q=${encodeURIComponent(q)}`;
   });
+
+  function loadWeather() {
+    if (!weatherCard) return;
+  
+    if (!navigator.geolocation) {
+      weatherCard.textContent = "Location not supported";
+      return;
+    }
+  
+    navigator.geolocation.getCurrentPosition(
+      async position => {
+        try {
+          const { latitude, longitude } = position.coords;
+          const res = await fetch(
+            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`
+          );
+          const data = await res.json();
+  
+          if (!data.current_weather) throw new Error();
+  
+          weatherCard.textContent =
+            `${Math.round(data.current_weather.temperature)}°C • ` +
+            `Wind ${data.current_weather.windspeed} km/h`;
+        } catch {
+          weatherCard.textContent = "Weather unavailable";
+        }
+      },
+      () => {
+        weatherCard.textContent = "Location permission denied";
+      }
+    );
+  }  
   
   function updateClock() {
     const n = new Date();
@@ -234,6 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("greeting").textContent = g;
   }
   
+  loadWeather();
   loadShortcuts();
   updateClock();
   setInterval(updateClock, 1000);
