@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New Tab</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" icon-type="images/avif" href="images/favicon.avif">
+</head>
+<body>
+    <button id="settingsBtn" aria-label="Settings" class="settings-btn">S</button>
+
+    <aside id="settingsSidebar" class="settings-sidebar">
+        <h2>Settings</h2>
+
+        <div class="setting-item">
+            <span>Theme</span>
+            <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">Light</button>
+        </div>
+
+        <div class="setting-item">
+            <span>Add Shortcuts</span>
+            <button id="addShortcut">Add shortcut</button>
+        </div>
+
+        <div class="setting-item">
+            <span>Copyright 2026, Glow Tab made with love, Cool Cream</span>
+    
+        </div>
+          
+    </aside>
+
+    <div id="overlay" class="overlay"></div>
+    
+    <div class="center">
+        <div id="time">12:42</div>
+        <div id="date">13th January 2026</div>
+        <div id="greeting">Good evening</div>
+
+        <div class="search-container">
+            <form id="searchForm">
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search the web..."
+                    autocomplete="off"
+                />
+            </form>
+        </div>
+        
+    </div>
+
+    <main class="widgets">
+
+        <section id="shortcuts" class="shortcuts">
+            
+        </section>
+
+    <main class="widgets">
+        <div class="card">
+            <h3>Weather</h3>
+            <p class="muted">Loading...</p>
+        </div>
+        <div class="card">
+            <h3>Todo</h3>
+            <p class="muted">Loading...</p>
+        </div>
+        <div class="card">
+            <h3>Notes</h3>
+            <p class="muted">Loading...</p>
+        </div>
+    </main>
+    
+</body>
+
+<div id="shortcutMenu" class="shortcut-menu">
+    <button id="editShortcut">Edit</button>
+    <button id="deleteShortcut">Delete</button>
+</div>
+
+  <script src="main.js"></script>
+</html>

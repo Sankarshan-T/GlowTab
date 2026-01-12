@@ -3,7 +3,8 @@
   "name": "Glow Tab",
   "version": "1.0",
   "description": "A personalized new tab page.",
+  "permissions": ["storage"],
   "chrome_url_overrides": {
-    "newtab": "newtab.html"
-  }
+    "newtab": "index.html"
+  }  
 }
