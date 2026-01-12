@@ -68,13 +68,30 @@
             <p class="muted">Loading...</p>
         </div>
     </main>
+
+    <div id="shortcutModal" class="shortcut-modal hidden">
+        <div class="shortcut-modal-card">
+            <h2 id="modalTitle">Add Shortcut</h2>
+
+            <input id="shortcutName" placeholder="Shortcut Name..." />
+            <input id="shortcutUrl" placeholder="example.com" />
+
+            <div class="shortcut-modal-actions">
+                <button id="cancelShortcut">Cancel</button>
+                <button id="saveShortcut" class="primary">Save</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="shortcutMenu" class="shortcut-menu">
+        <button id="editShortcut">Edit</button>
+        <button id="deleteShortcut">Delete</button>
+    </div>
+
+  <script src="main.js" defer></script>
     
 </body>
 
-<div id="shortcutMenu" class="shortcut-menu">
-    <button id="editShortcut">Edit</button>
-    <button id="deleteShortcut">Delete</button>
-</div>
-
-  <script src="main.js"></script>
+    
 </html>
