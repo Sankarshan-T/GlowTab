@@ -1,4 +1,5 @@
 :root {
+    --notepadsidebar-width: 600px;
     --sidebar-width: 280px;
     --sidebar-gap: 14px;
   }
@@ -157,11 +158,30 @@
     box-sizing: border-box;
     height: 100vh;
   }
-
-  .history-btn {
+  
+  .sidebar-icons {
     position: fixed;
     top: var(--sidebar-gap);
     left: var(--sidebar-gap);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 1003;
+  }
+
+  .sidebar-icons.hide-others button {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.8);
+  }
+
+  .sidebar-icons.hide-others button.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+  }
+  
+  .sidebar-icons button {
     width: 44px;
     height: 44px;
     border-radius: 12px;
@@ -173,21 +193,17 @@
     cursor: pointer;
     transition:
       transform 0.3s ease,
-      background 0.2s ease;
-    z-index: 1003;
+      background 0.2s ease,
+      opacity 0.2s ease;
   }
-  
-  .history-btn:active {
-    border: 2px solid var(--glow-cyan);
-  }
-  
-  .history-btn:hover {
+
+  .sidebar-icons button:hover {
     transform: translateY(-2px);
     background: var(--glass-12);
   }
   
-  .history-btn.shifted {
-    transform: translateX(320px);
+  .sidebar-icons button:active {
+    border: 2px solid var(--glow-cyan);
   }
   
   .history-sidebar {
@@ -205,13 +221,12 @@
     border-right: 1px solid var(--border-glass); 
     transform: translateX(-100%); 
     transition: transform 0.3s ease;
-    z-index: 1002;
+    z-index: 1001;
   }
   
   .history-sidebar.open {
     transform: translateX(0);
-  }
-  
+  } 
   
   .history-sidebar h2 {
     margin: 0 0 20px;
@@ -237,44 +252,117 @@
     background: var(--glass-12);
   }
 
-  
-  .settings-btn {
-    position: fixed;
-    top: var(--sidebar-gap);
-    right: var(--sidebar-gap);
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    border: 1px solid var(--border-glass);
-    background: var(--glass-12);
-    backdrop-filter: blur(24px);
-    color: var(--text-main);
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition:
-      transform 0.3s ease,
-      background 0.2s ease;
-    z-index: 1003;
-  }
-  
-  .settings-btn:active {
-    border: 2px solid var(--glow-cyan);
-  }
-  
-  .settings-btn:hover {
-    transform: translateY(-2px);
-    background: var(--glass-12);
-  }
-  
-  .settings-btn.shifted {
-    transform: translateX(-320px);
-  }
-  
-  .settings-sidebar {
+  .notepad-sidebar {
     position: fixed;
     top: 0;
-    right: 0;
-    width: var(--sidebar-width);
+    left: 0;
+    width: var(--notepadsidebar-width);
+    height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: var(--glass-06);
+    backdrop-filter: blur(14px);
+    border-right: 1px solid var(--border-glass); 
+    transform: translateX(-100%); 
+    transition: transform 0.3s ease;
+    z-index: 1001;
+  }
+  
+  .notepad-sidebar.open {
+    transform: translateX(0);
+  } 
+  
+  .h2group {
+    display: flex;
+    gap: 8px;
+  }
+
+  .notes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  #notesToggle {
+    background: var(--glass-03);
+    backdrop-filter: blur(10px);
+    border: none;
+    border-radius: 2px;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+    transition: transform 0.3s ease,
+      background 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+  
+  #notesToggle:hover {
+    transform: translateY(-3px);
+    background: var(--glass-09);
+    box-shadow: 0 12px 30px var(--shadow-strong);
+  }
+  
+  .notes-body {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+  
+  .notes-preview h1,
+  .notes-preview h2,
+  .notes-preview h3 {
+    margin-top: 0.5em;
+  }
+  
+  #notesInput,
+  .notes-preview {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+  
+  #notesInput {
+    resize: none;
+    background: transparent;
+    color: var(--text-main);
+    border: none;
+    outline: none;
+    font-family: system-ui;
+  }
+  
+  .notes-preview {
+    padding-right: 4px;
+  }
+  .notepad-sidebar h2 {
+    margin: 0 0 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--glow-cyan);
+  }
+    
+  .notepad-sidebar a {
+    margin: 0 0 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--glow-purple);
+    text-decoration: none;
+  }
+  
+  .notepad-sidebar a:hover {
+    color: var(--glow-cyan);
+  }
+
+  
+  .settings-sidebar {
     height: 100vh;
     padding: 20px;
     display: flex;
@@ -282,9 +370,14 @@
     gap: 16px;
     background: var(--glass-08);
     backdrop-filter: blur(18px);
-    border-left: 1px solid var(--border-glass);
-    transform: translateX(100%);
     transition: transform 0.3s ease;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidebar-width);
+    height: 100vh;
+    transform: translateX(-100%);
+    border-right: 1px solid var(--border-glass);
     z-index: 1002;
   }
   
@@ -610,30 +703,6 @@
       background 0.2s ease;
   }
   
-  .card h3 {
-    margin: 0 0 6px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--glow-cyan);
-  }
-  
-  .h3group {
-    display: flex;
-    gap: 8px;
-  }
-  
-  .card a {
-    margin: 0 0 6px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--glow-cyan);
-    text-decoration: none;
-  }
-  
-  .card a:hover {
-    color: var(--glow-purple);
-  }
-  
   #weather {
     justify-self: center;
     font-size: 1.2rem;
@@ -645,69 +714,6 @@
     color: var(--text-muted);
   }
   
-  .notes-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  #notesToggle {
-    background: var(--glass-03);
-    backdrop-filter: blur(10px);
-    border: none;
-    border-radius: 2px;
-    color: var(--text-muted);
-    cursor: pointer;
-    font-size: 1rem;
-    text-align: center;
-    transition: transform 0.3s ease,
-      background 0.3s ease,
-      box-shadow 0.3s ease;
-  }
-  
-  #notesToggle:hover {
-    transform: translateY(-3px);
-    background: var(--glass-09);
-    box-shadow: 0 12px 30px var(--shadow-strong);
-  }
-  
-  .notes-body {
-    position: relative;
-    height: 120px;
-    overflow: hidden;
-    border-radius: 10px;
-  }
-  
-  .notes-preview h1,
-  .notes-preview h2,
-  .notes-preview h3 {
-    margin-top: 0.5em;
-  }
-  
-  #notesInput,
-  .notes-preview {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    font-size: 0.85rem;
-    line-height: 1.4;
-  }
-  
-  #notesInput {
-    resize: none;
-    background: transparent;
-    color: var(--text-main);
-    border: none;
-    outline: none;
-    font-family: system-ui;
-  }
-  
-  .notes-preview {
-    padding-right: 4px;
-  }
   
   .hidden {
     display: none;

@@ -1,26 +1,33 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("searchForm");
   const input = document.getElementById("searchInput");
-  const settingsBtn = document.getElementById("settingsBtn");
-  const sidebar = document.getElementById("settingsSidebar");
   const overlay = document.getElementById("overlay");
+
   const notesInput = document.getElementById("notesInput");
   const notesPreview = document.getElementById("notesPreview");
   const notesToggle = document.getElementById("notesToggle");
+
   const searchBtn = document.getElementById("searchBtn");
   const themeSelect = document.getElementById("themeSelect");
-  const historyBtn = document.getElementById("historyBtn");
+
   const historySidebar = document.getElementById("historySidebar");
   const historyList = document.getElementById("historyList");
+
   const root = document.documentElement;
+
   const modal = document.getElementById("shortcutModal");
   const modalTitle = document.getElementById("modalTitle");
   const nameInput = document.getElementById("shortcutName");
   const urlInput = document.getElementById("shortcutUrl");
   const saveBtn = document.getElementById("saveShortcut");
   const cancelBtn = document.getElementById("cancelShortcut");
+
   const weatherCard = document.getElementById("weather");
   const goal = document.getElementById("goalInput");
+
+  const iconGroup = document.querySelector(".sidebar-icons");
+  const buttons = iconGroup?.querySelectorAll("button") || [];
+  const sidebars = document.querySelectorAll("aside");
 
   let previewMode = false;
   let selectedShortcutIndex = null;
@@ -34,37 +41,38 @@ document.addEventListener("DOMContentLoaded", () => {
     { name: "Microsoft", url: "https://microsoft.com/" }
   ];
 
+  const shiftButtons = amount => {
+    buttons.forEach(b => {
+      b.style.transform = amount ? `translateX(${amount}px)` : "";
+    });
+  };
+
   function loadHistory() {
     if (!chrome?.history || !historyList) return;
-    chrome.history.search(
-      { text: "", maxResults: 50 },
-      results => {
-        historyList.innerHTML = "";
-        results.forEach(item => {
-          const li = document.createElement("li");
-          li.textContent = item.title || item.url;
-          li.onclick = () => chrome.tabs.create({ url: item.url });
-          historyList.appendChild(li);
-        });
-      }
-    );
+    chrome.history.search({ text: "", maxResults: 50 }, results => {
+      historyList.innerHTML = "";
+      results.forEach(i => {
+        const li = document.createElement("li");
+        li.textContent = i.title || i.url;
+        li.onclick = () => chrome.tabs.create({ url: i.url });
+        historyList.appendChild(li);
+      });
+    });
   }
 
   function showGoal() {
     goal.value = localStorage.getItem("goal") || "";
   }
 
-  goal?.addEventListener("input", () => {
-    localStorage.setItem("goal", goal.value);
-  });
+  goal?.addEventListener("input", () =>
+    localStorage.setItem("goal", goal.value)
+  );
 
   if (notesInput && notesPreview && notesToggle) {
-    const saved = localStorage.getItem("notes-md") || "";
-    notesInput.value = saved;
+    notesInput.value = localStorage.getItem("notes-md") || "";
 
-    function renderPreview() {
-      notesPreview.innerHTML = marked.parse(notesInput.value);
-    }
+    const renderPreview = () =>
+      (notesPreview.innerHTML = marked.parse(notesInput.value));
 
     renderPreview();
 
@@ -78,79 +86,86 @@ document.addEventListener("DOMContentLoaded", () => {
       notesInput.classList.toggle("hidden", previewMode);
       notesPreview.classList.toggle("hidden", !previewMode);
       notesToggle.textContent = previewMode ? "✏️" : "👁️";
-      if (previewMode) renderPreview();
-      else notesInput.focus();
+      previewMode ? renderPreview() : notesInput.focus();
     });
   }
 
-  function normalizeUrl(input) {
-    try { return new URL(input).href; }
+  const normalizeUrl = v => {
+    try { return new URL(v).href; }
     catch {
-      try { return new URL(`https://${input}`).href; }
+      try { return new URL(`https://${v}`).href; }
       catch { return null; }
     }
-  }
+  };
 
-  function getShortcuts(cb) {
+  const getShortcuts = cb =>
     chrome.storage.sync.get(["shortcuts"], d => cb(d.shortcuts || []));
-  }
 
-  function setShortcuts(shortcuts, cb) {
-    chrome.storage.sync.set({ shortcuts }, cb);
-  }
+  const setShortcuts = (s, cb) =>
+    chrome.storage.sync.set({ shortcuts: s }, cb);
 
   function loadShortcuts() {
-    getShortcuts(s => {
-      if (!s.length) {
-        setShortcuts(defaultShortcuts, () => renderShortcuts(defaultShortcuts));
-      } else {
-        renderShortcuts(s);
-      }
-    });
+    getShortcuts(s =>
+      s.length
+        ? renderShortcuts(s)
+        : setShortcuts(defaultShortcuts, () =>
+            renderShortcuts(defaultShortcuts)
+          )
+    );
   }
 
   function renderShortcuts(shortcuts) {
     const container = document.getElementById("shortcuts");
     if (!container) return;
+
     container.innerHTML = "";
+
     shortcuts.forEach((sc, i) => {
       const a = document.createElement("a");
       a.className = "shortcut";
       a.href = sc.url;
       a.draggable = true;
+
       a.addEventListener("contextmenu", e => {
         e.preventDefault();
         showShortcutMenu(e.pageX, e.pageY, i);
       });
-      const icon = document.createElement("span");
-      icon.className = "icon";
+
       const img = document.createElement("img");
       img.src = `https://icons.duckduckgo.com/ip3/${new URL(sc.url).hostname}.ico`;
-      icon.appendChild(img);
-      const label = document.createElement("span");
-      label.className = "label";
-      label.textContent = sc.name;
-      a.append(icon, label);
+
+      a.append(
+        Object.assign(document.createElement("span"), { className: "icon" }).appendChild(img).parentNode,
+        Object.assign(document.createElement("span"), { className: "label", textContent: sc.name })
+      );
+
       container.appendChild(a);
     });
-    container.addEventListener("wheel", e => {
-      e.preventDefault();
-      container.scrollLeft += e.deltaY;
-    }, { passive: false });
+
+    container.addEventListener(
+      "wheel",
+      e => {
+        e.preventDefault();
+        container.scrollLeft += e.deltaY;
+      },
+      { passive: false }
+    );
   }
 
   function showShortcutMenu(x, y, index) {
     const menu = document.getElementById("shortcutMenu");
     if (!menu) return;
     selectedShortcutIndex = index;
-    menu.style.left = `${x}px`;
-    menu.style.top = `${y}px`;
-    menu.style.display = "block";
+    Object.assign(menu.style, {
+      left: `${x}px`,
+      top: `${y}px`,
+      display: "block"
+    });
   }
 
   document.addEventListener("click", () => {
-    const menu = document.getElementById("shortcutMenu");
-    if (menu) menu.style.display = "none";
+    const m = document.getElementById("shortcutMenu");
+    if (m) m.style.display = "none";
   });
 
   function openModal(edit = false, sc = null, index = null) {
@@ -162,37 +177,39 @@ document.addEventListener("DOMContentLoaded", () => {
     nameInput.focus();
   }
 
-  function closeModal() {
+  const closeModal = () => {
     modal.classList.add("hidden");
     nameInput.value = "";
     urlInput.value = "";
     editIndex = null;
-  }
+  };
 
-  document.getElementById("addShortcut")?.addEventListener("click", () => openModal());
+  document.getElementById("addShortcut")?.addEventListener("click", () =>
+    openModal()
+  );
 
-  document.getElementById("editShortcut")?.addEventListener("click", () => {
+  document.getElementById("editShortcut")?.addEventListener("click", () =>
     getShortcuts(s => {
       const sc = s[selectedShortcutIndex];
       if (sc) openModal(true, sc, selectedShortcutIndex);
-    });
-  });
+    })
+  );
 
-  document.getElementById("deleteShortcut")?.addEventListener("click", () => {
+  document.getElementById("deleteShortcut")?.addEventListener("click", () =>
     getShortcuts(s => {
       if (selectedShortcutIndex == null) return;
       s.splice(selectedShortcutIndex, 1);
       setShortcuts(s, () => renderShortcuts(s));
-    });
-  });
+    })
+  );
 
   saveBtn?.addEventListener("click", () => {
     const name = nameInput.value.trim();
     const url = normalizeUrl(urlInput.value.trim());
     if (!name || !url) return;
+
     getShortcuts(s => {
-      if (editIndex !== null) s[editIndex] = { name, url };
-      else s.push({ name, url });
+      editIndex !== null ? (s[editIndex] = { name, url }) : s.push({ name, url });
       setShortcuts(s, () => {
         renderShortcuts(s);
         closeModal();
@@ -212,12 +229,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.addEventListener("drop", e => {
     const sc = e.target.closest(".shortcut");
-    if (!sc || dragStartIndex === null) return;
+    if (!sc || dragStartIndex == null) return;
+
     const dropIndex = [...sc.parentNode.children].indexOf(sc);
+
     getShortcuts(s => {
-      const [m] = s.splice(dragStartIndex, 1);
-      s.splice(dropIndex, 0, m);
+      const [moved] = s.splice(dragStartIndex, 1);
+      s.splice(dropIndex, 0, moved);
       setShortcuts(s, () => renderShortcuts(s));
+      dragStartIndex = null;
     });
   });
 
@@ -230,30 +250,44 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("theme", themeSelect.value);
   });
 
-  historyBtn?.addEventListener("click", () => {
-    const open = historySidebar.classList.toggle("open");
-    overlay.classList.toggle("show", open);
-    historyBtn.classList.toggle("shifted", open);
-    if (open) loadHistory();
-  });
+  iconGroup?.addEventListener("click", e => {
+    const btn = e.target.closest("button[data-sidebar]");
+    if (!btn) return;
 
-  settingsBtn?.addEventListener("click", () => {
-    const open = sidebar.classList.toggle("open");
-    overlay.classList.toggle("show", open);
-    settingsBtn.classList.toggle("shifted", open);
+    const sidebar = document.getElementById(btn.dataset.sidebar);
+    if (!sidebar) return;
+
+    const width = sidebar.getBoundingClientRect().width;
+    const isOpen = sidebar.classList.contains("open");
+
+    sidebars.forEach(s => s.classList.remove("open"));
+    buttons.forEach(b => b.classList.remove("active", "shifted"));
+    shiftButtons(0);
+
+    if (!isOpen) {
+      sidebar.classList.add("open");
+      btn.classList.add("active", "shifted");
+      overlay?.classList.add("show");
+      shiftButtons(width);
+
+      if (sidebar === historySidebar) loadHistory();
+      
+    } else {
+      overlay?.classList.remove("show");
+    }
   });
 
   overlay?.addEventListener("click", () => {
-    sidebar?.classList.remove("open");
-    historySidebar?.classList.remove("open");
+    sidebars.forEach(s => s.classList.remove("open"));
+    buttons.forEach(b => b.classList.remove("active", "shifted"));
+    shiftButtons(0);
     overlay.classList.remove("show");
-    settingsBtn?.classList.remove("shifted");
-    historyBtn?.classList.remove("shifted");
   });
 
   function submitSearch() {
     const q = input?.value.trim();
-    if (q) window.location.href = `https://www.google.com/search?q=${encodeURIComponent(q)}`;
+    if (q)
+      window.location.href = `https://www.google.com/search?q=${encodeURIComponent(q)}`;
   }
 
   form?.addEventListener("submit", e => {
@@ -268,9 +302,14 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const loc = await (await fetch("https://ipwho.is/")).json();
       if (!loc.success) throw 0;
-      const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${loc.latitude}&longitude=${loc.longitude}&current_weather=true`);
-      const data = await res.json();
-      const w = data.current_weather;
+      const w = (
+        await (
+          await fetch(
+            `https://api.open-meteo.com/v1/forecast?latitude=${loc.latitude}&longitude=${loc.longitude}&current_weather=true`
+          )
+        ).json()
+      ).current_weather;
+
       weatherCard.innerHTML = `${Math.round(w.temperature)}°C • Wind ${w.windspeed} km/h<br>${loc.city || "Your area"}`;
     } catch {
       weatherCard.textContent = "Weather unavailable";
@@ -280,13 +319,23 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateClock() {
     const n = new Date();
     const h24 = n.getHours();
-    const g = h24 < 12 ? "Good Morning" : h24 < 17 ? "Good Afternoon" : h24 < 21 ? "Good Evening" : "Good Night";
-    const h = (h24 % 12 || 12).toString().padStart(2, "0");
-    const m = n.getMinutes().toString().padStart(2, "0");
-    const s = n.getSeconds().toString().padStart(2, "0");
-    const ap = h24 >= 12 ? "PM" : "AM";
-    document.getElementById("time").textContent = `${h}:${m}:${s} ${ap}`;
-    document.getElementById("date").textContent = `${n.toLocaleString("default",{month:"long"})} ${n.getDate()}, ${n.getFullYear()}`;
+    const g =
+      h24 < 12
+        ? "Good Morning"
+        : h24 < 17
+        ? "Good Afternoon"
+        : h24 < 21
+        ? "Good Evening"
+        : "Good Night";
+
+    document.getElementById("time").textContent =
+      `${(h24 % 12 || 12).toString().padStart(2, "0")}:` +
+      `${n.getMinutes().toString().padStart(2, "0")}:` +
+      `${n.getSeconds().toString().padStart(2, "0")} ${h24 >= 12 ? "PM" : "AM"}`;
+
+    document.getElementById("date").textContent =
+      `${n.toLocaleString("default", { month: "long" })} ${n.getDate()}, ${n.getFullYear()}`;
+
     document.getElementById("greeting").textContent = g;
   }
 

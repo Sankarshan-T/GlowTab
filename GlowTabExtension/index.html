@@ -7,11 +7,15 @@
     <link rel="icon" icon-type="images/png" href="images/favicon.png">
 </head>
 <body>
-    <button id="settingsBtn" aria-label="Settings" class="settings-btn">⚙️</button>
+    <div class="sidebar-icons">
+        <button id="settingsBtn" class="settings-btn" data-sidebar="settingsSidebar">⚙️</button>
+        <button id="historyBtn" class="history-btn" data-sidebar="historySidebar">🕜</button>
+        <button id="notepadBtn" class="notepad-btn" data-sidebar="notepadSidebar">🗒️</button>
+    </div>
+    
 
     <aside id="settingsSidebar" class="settings-sidebar">
         <h2>Settings</h2>
-
         <div class="setting-item">
             <span>Theme</span>
             <select id="themeSelect" class="theme-select">
@@ -25,24 +29,33 @@
                 <option value="willow-mint">Willow Mint</option>
             </select>
         </div>
-
         <div class="setting-item">
             <span>Add Shortcuts</span>
             <button id="addShortcut">Add shortcut</button>
         </div>
-
         <div class="setting-item">
-            <span>Copyright 2026, Glow Tab made with love, Cool Cream</span>
-    
+            <span>Copyright 2026, Glow Tab made with love, Cool Cream</span>    
         </div>
-          
     </aside>
-
-    <button id="historyBtn" aria-label="History" class="history-btn">🕜</button>
 
     <aside id="historySidebar" class="history-sidebar">
         <h2>History</h2>
         <ul id="historyList"></ul>
+    </aside>
+
+    <aside id="notepadSidebar" class="notepad-sidebar">
+        <div class="notes-header">
+            <div class="h2group">
+                <h2>Notepad</h2>
+                <a href="#">(Supports Markdown)</a>
+            </div>                
+            <button id="notesToggle" title="Toggle preview">👁️</button>
+        </div>
+
+        <div class="notes-body">
+            <textarea id="notesInput" placeholder="Write Markdown..."></textarea>
+            <div id="notesPreview" class="notes-preview hidden"></div>
+        </div>
     </aside>
 
     <div id="overlay" class="overlay"></div>
@@ -86,18 +99,7 @@
             
         </div>
         <div class="card">
-            <div class="notes-header">
-                <div class="h3group">
-                    <h3>Notes</h3>
-                    <a href="#">(Supports Markdown)</a>
-                </div>                
-                <button id="notesToggle" title="Toggle preview">👁️</button>
-            </div>
-
-            <div class="notes-body">
-                <textarea id="notesInput" placeholder="Write Markdown..."></textarea>
-                <div id="notesPreview" class="notes-preview hidden"></div>
-            </div>
+            
         </div>
     </main>
 
