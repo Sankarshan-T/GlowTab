@@ -3,7 +3,11 @@
   "name": "Glow Tab",
   "version": "1.0",
   "description": "A personalized new tab page.",
-  "permissions": ["storage"],
+  "permissions": ["storage", "history", "tabs"], 
+  "host_permissions": [
+    "https://ipwho.is/*",
+    "https://api.open-meteo.com/*"
+  ], 
   "chrome_url_overrides": {
     "newtab": "index.html"
   }  

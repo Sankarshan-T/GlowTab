@@ -2,18 +2,28 @@
 <html>
 <head>
     <title>New Tab</title>
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" icon-type="images/avif" href="images/favicon.avif">
+    <link rel="icon" icon-type="images/png" href="images/favicon.png">
 </head>
 <body>
-    <button id="settingsBtn" aria-label="Settings" class="settings-btn">S</button>
+    <button id="settingsBtn" aria-label="Settings" class="settings-btn">⚙️</button>
 
     <aside id="settingsSidebar" class="settings-sidebar">
         <h2>Settings</h2>
 
         <div class="setting-item">
             <span>Theme</span>
-            <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">Light</button>
+            <select id="themeSelect" class="theme-select">
+                <option value="dark">Dark (Default)</option>
+                <option value="light">Light</option>
+                <option value="obsidian">Obsidian</option>
+                <option value="arctic-white">Arctic White</option>
+                <option value="ember-night">Ember Night</option>
+                <option value="cosmic-violet">Cosmic Violet</option>
+                <option value="sage-grove">Sage Grove</option>
+                <option value="willow-mint">Willow Mint</option>
+            </select>
         </div>
 
         <div class="setting-item">
@@ -26,6 +36,13 @@
     
         </div>
           
+    </aside>
+
+    <button id="historyBtn" aria-label="History" class="history-btn">🕜</button>
+
+    <aside id="historySidebar" class="history-sidebar">
+        <h2>History</h2>
+        <ul id="historyList"></ul>
     </aside>
 
     <div id="overlay" class="overlay"></div>
@@ -44,6 +61,8 @@
                     autocomplete="off"
                 />
             </form>
+            <button id="searchBtn">🔍</button>
+            
         </div>
         
     </div>
@@ -60,12 +79,25 @@
             <p class="muted" id="weather">Loading...</p>
         </div>
         <div class="card">
-            <h3>Todo</h3>
-            <p class="muted">Loading...</p>
+            <div class="notes-header">
+                <h3>Today's Goal</h3>
+            </div>
+            <input type="text" id="goalInput" placeholder="Todays goal is..."></input>
+            
         </div>
         <div class="card">
-            <h3>Notes</h3>
-            <p class="muted">Loading...</p>
+            <div class="notes-header">
+                <div class="h3group">
+                    <h3>Notes</h3>
+                    <a href="#">(Supports Markdown)</a>
+                </div>                
+                <button id="notesToggle" title="Toggle preview">👁️</button>
+            </div>
+
+            <div class="notes-body">
+                <textarea id="notesInput" placeholder="Write Markdown..."></textarea>
+                <div id="notesPreview" class="notes-preview hidden"></div>
+            </div>
         </div>
     </main>
 
@@ -89,7 +121,8 @@
         <button id="deleteShortcut">Delete</button>
     </div>
 
-  <script src="main.js" defer></script>
+    <script src="marked.min.js"></script>
+    <script src="main.js" defer></script>    
     
 </body>
 
