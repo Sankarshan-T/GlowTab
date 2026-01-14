@@ -1,5 +1,6 @@
 const previewBox = document.getElementById("previewBox");
-const addbtn = document.getElementById("addToChrome");
+const addbtn1 = document.getElementById("addToChrome1");
+const addbtn2 = document.getElementById("addToChrome2");
 const gap = 30;
 
 document.getElementById("nextBtn").addEventListener("click", (e) => {
@@ -24,6 +25,10 @@ function dowloadExtension(url, filename) {
     document.body.removeChild(link);
 }
 
-addbtn.addEventListener("click", () => {
+addbtn1.addEventListener("click", () => {
+    dowloadExtension("GlowTabExtension.zip", 'GlowTabv1.zip');
+});
+
+addbtn2.addEventListener("click", () => {
     dowloadExtension("GlowTabExtension.zip", 'GlowTabv1.zip');
 });
