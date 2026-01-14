@@ -3,8 +3,8 @@
     --bg-grad-2: rgba(225, 230, 245, 1);
     --text-main: rgba(20, 24, 38, 1);
     --text-muted: rgba(90, 98, 135, 1);
-    --glow-cyan: rgba(0, 140, 180, 1);
-    --glow-purple: rgba(110, 90, 200, 1);
+    --glow-cyan: rgb(0, 111, 142);
+    --glow-purple: rgb(65, 53, 118);
   
     --glass-06: rgba(0, 0, 0, 0.06);
     --glass-08: rgba(0, 0, 0, 0.08);
@@ -36,8 +36,6 @@
   navbar {
     display: block;
   }
-  
-  /* navbar */
   
   .navbar {
     width: 90%;
@@ -114,28 +112,26 @@
   @keyframes pulse {
     0% {
         text-shadow:
-          0 0 6px  rgba(180, 80, 255, 0.9),
-          0 0 14px rgba(180, 80, 255, 0.7),
-          0 0 30px rgba(180, 80, 255, 0.5);
+          0 0 3px  rgba(180, 80, 255, 0.9),
+          0 0 7px rgba(180, 80, 255, 0.7),
+          0 0 15px rgba(180, 80, 255, 0.5);
           color: var(--glow-purple);
       }
       50% {
         text-shadow:
-          0 0 8px  rgba(0, 220, 255, 1),
-          0 0 18px rgba(0, 220, 255, 0.8),
-          0 0 36px rgba(0, 220, 255, 0.6);
+          0 0 4px  rgba(0, 220, 255, 1),
+          0 0 9px rgba(0, 220, 255, 0.8),
+          0 0 18px rgba(0, 220, 255, 0.6);
           color: var(--glow-cyan);
       }
       100% {
         text-shadow:
-          0 0 6px  rgba(180, 80, 255, 0.9),
-          0 0 14px rgba(180, 80, 255, 0.7),
-          0 0 30px rgba(180, 80, 255, 0.5);
+          0 0 3px  rgba(180, 80, 255, 0.9),
+          0 0 7px rgba(180, 80, 255, 0.7),
+          0 0 15px rgba(180, 80, 255, 0.5);
           color: var(--glow-purple);
       }
   }
-  
-  
   
 
   .hero h1 {
@@ -200,14 +196,15 @@
   #preview {
     width: 90%;
     max-width: 1100px;
-    margin: 100px auto 0;
+    margin: 300px auto 0;;
     text-align: center;
   }
+
+  .section {margin-top: 200px;}
   
   .section h2,
   #preview h2 {
     font-size: 2.4rem;
-    margin-bottom: 14px;
   }
   
   .section p,
@@ -238,6 +235,10 @@
   
   .feature-card:hover {
     transform: translateY(-6px);
+  }
+
+  .feature-card p {
+    margin-top: 5px;
   }
   
   /* preview */
