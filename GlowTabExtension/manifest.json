@@ -9,6 +9,9 @@
     "https://api.open-meteo.com/*"
   ], 
   "chrome_url_overrides": {
-    "newtab": "index.html"
-  }  
+    "newtab": "newTab.html"
+  },
+  "action": {
+    "default_icon": "favicon.png"
+  }
 }
