@@ -363,22 +363,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function loadWeather() {
     if (!weatherCard) return;
+  
     try {
-      const loc = await (await fetch("https://ipwho.is/")).json();
-      if (!loc.success) throw 0;
-      const w = (
-        await (
-          await fetch(
-            `https://api.open-meteo.com/v1/forecast?latitude=${loc.latitude}&longitude=${loc.longitude}&current_weather=true`
-          )
-        ).json()
-      ).current_weather;
-
-      weatherCard.innerHTML = `${Math.round(w.temperature)}°C • Wind ${w.windspeed} km/h<br>${loc.city || "Your area"}`;
-    } catch {
+      const locRes = await fetch("https://ipwho.is/");
+      const loc = await locRes.json();
+  
+      if (!loc.success) {
+        throw new Error("Location lookup failed");
+      }
+  
+      const weatherRes = await fetch(
+        `https://api.open-meteo.com/v1/forecast?latitude=${loc.latitude}&longitude=${loc.longitude}&current_weather=true`
+      );
+      const weatherData = await weatherRes.json();
+  
+      if (!weatherData.current_weather) {
+        throw new Error("Weather data missing");
+      }
+  
+      const w = weatherData.current_weather;
+  
+      weatherCard.innerHTML = `
+        ${Math.round(w.temperature)}°C • Wind ${w.windspeed} km/h<br>
+        ${loc.city || "Your area"}
+      `;
+    } catch (err) {
+      console.error(err);
       weatherCard.textContent = "Weather unavailable";
     }
   }
+  
 
   function updateClock() {
     const n = new Date();
