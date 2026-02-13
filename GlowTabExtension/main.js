@@ -33,6 +33,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const startStopBtn = document.getElementById('startStopBtn');
   const resetBtn = document.getElementById('resetBtn');
 
+  const cityInput = document.getElementById("cityInput");
+  const citySuggestions = document.getElementById("citySuggestions");
+
+
   let previewMode = false;
   let selectedShortcutIndex = null;
   let editIndex = null;
@@ -216,6 +220,76 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
+  function loadWeather(city) {
+    if (!city) return;
+  
+    localStorage.setItem("your-city", city);
+  
+    fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1`)
+      .then(res => res.json())
+      .then(loc => {
+        if (!loc.results?.length) {
+          document.getElementById("weather-city").textContent =
+            "CITY NOT FOUND";
+          return;
+        }
+  
+        const { latitude, longitude, name } = loc.results[0];
+  
+        return fetch(
+          `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`
+        )
+          .then(res => res.json())
+          .then(data => {
+            document.getElementById("weather-temp").textContent =
+              Math.round(data.current_weather.temperature) + "°C";
+  
+            document.getElementById("weather-city").textContent =
+              name.toUpperCase();
+          });
+      })
+      .catch(() => {
+        document.getElementById("weather-city").textContent =
+          "Weather unavailable";
+      });
+  }
+
+  if (cityInput && citySuggestions) {
+    cityInput.oninput = () => {
+      const q = cityInput.value.trim();
+  
+      if (q.length < 2) {
+        citySuggestions.style.display = "none";
+        return;
+      }
+  
+      fetch(
+        `https://geocoding-api.open-meteo.com/v1/search?name=${q}&count=6`
+      )
+        .then(res => res.json())
+        .then(data => {
+          citySuggestions.innerHTML = "";
+  
+          data.results?.forEach(c => {
+            const div = document.createElement("div");
+            div.className = "city-option";
+            div.textContent = `${c.name}, ${c.country}`;
+  
+            div.onclick = () => {
+              loadWeather(c.name);
+              citySuggestions.style.display = "none";
+              cityInput.value = "";
+            };
+  
+            citySuggestions.appendChild(div);
+          });
+  
+          citySuggestions.style.display = "block";
+        });
+    };
+  }
+  
+
   function showShortcutMenu(x, y, index) {
     const menu = document.getElementById("shortcutMenu");
     if (!menu) return;
@@ -361,37 +435,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   searchBtn?.addEventListener("click", submitSearch);
 
-  async function loadWeather() {
-    if (!weatherCard) return;
-  
-    try {
-      const locRes = await fetch("https://ipwho.is/");
-      const loc = await locRes.json();
-  
-      if (!loc.success) {
-        throw new Error("Location lookup failed");
-      }
-  
-      const weatherRes = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${loc.latitude}&longitude=${loc.longitude}&current_weather=true`
-      );
-      const weatherData = await weatherRes.json();
-  
-      if (!weatherData.current_weather) {
-        throw new Error("Weather data missing");
-      }
-  
-      const w = weatherData.current_weather;
-  
-      weatherCard.innerHTML = `
-        ${Math.round(w.temperature)}°C • Wind ${w.windspeed} km/h<br>
-        ${loc.city || "Your area"}
-      `;
-    } catch (err) {
-      console.error(err);
-      weatherCard.textContent = "Weather unavailable";
-    }
-  }
   
 
   function updateClock() {
@@ -418,7 +461,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   showGoal();
-  loadWeather();
+  loadWeather(localStorage.getItem("your-city") || "Hyderabad");
   loadShortcuts();
   updateClock();
   setInterval(updateClock, 1000);

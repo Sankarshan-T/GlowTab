@@ -89,8 +89,23 @@
     <main class="widgets">
         <div class="card">
             <h3>Weather</h3>
-            <p class="muted" id="weather">Loading...</p>
-        </div>
+        
+            <div class="weather-display">
+                <div id="weather-temp">--°C</div>
+                <div id="weather-city">Loading...</div>
+            </div>
+            
+            <div class="city-input-wrapper">
+                <div id="citySuggestions" class="city-suggestions"></div>
+                <input
+                    type="text"
+                    id="cityInput"
+                    placeholder="Search city..."
+                    autocomplete="off"
+                />
+            </div>
+            
+        </div>        
         <div class="card">
             <div class="notes-header">
                 <h3>Today's Goal</h3>
