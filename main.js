@@ -26,9 +26,9 @@ function dowloadExtension(url, filename) {
 }
 
 addbtn1.addEventListener("click", () => {
-    dowloadExtension("GlowTabExtension.zip", 'GlowTabExtension.zip');
+    dowloadExtension("GlowTabCRX.zip", 'GlowTabCRX.zip');
 });
 
 addbtn2.addEventListener("click", () => {
-    dowloadExtension("GlowTabExtension.zip", 'GlowTabExtension.zip');
+    dowloadExtension("GlowTabCRX.zip", 'GlowTabCRX.zip');
 });
