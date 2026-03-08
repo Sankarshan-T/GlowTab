@@ -100,9 +100,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   startStopBtn.addEventListener('click', () => {
     if (isRunning) {
-        stop();
+      stop();
     } else {
-        start();
+      start();
     }
   });
 
@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
     elapsedTime = 0;
     isRunning = false;
     startStopBtn.textContent = 'Start';
-    startStopBtn.classList.remove('stop');  
+    startStopBtn.classList.remove('stop');
   });
 
   function loadHistory() {
@@ -177,8 +177,8 @@ document.addEventListener("DOMContentLoaded", () => {
       s.length
         ? renderShortcuts(s)
         : setShortcuts(defaultShortcuts, () =>
-            renderShortcuts(defaultShortcuts)
-          )
+          renderShortcuts(defaultShortcuts)
+        )
     );
   }
 
@@ -187,6 +187,19 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!container) return;
 
     container.innerHTML = "";
+    const add = document.createElement("button");
+    add.className = "addhomeshortcut";
+    add.draggable = false;
+
+    add.addEventListener("click", () => {
+      openModal();
+    });
+
+    add.append(
+      Object.assign(document.createElement("span"), { className: "plus", textContent: "+" })
+    );
+
+    container.appendChild(add);
 
     shortcuts.forEach((sc, i) => {
       const a = document.createElement("a");
@@ -222,9 +235,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function loadWeather(city) {
     if (!city) return;
-  
+
     localStorage.setItem("your-city", city);
-  
+
     fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1`)
       .then(res => res.json())
       .then(loc => {
@@ -233,9 +246,9 @@ document.addEventListener("DOMContentLoaded", () => {
             "CITY NOT FOUND";
           return;
         }
-  
+
         const { latitude, longitude, name } = loc.results[0];
-  
+
         return fetch(
           `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`
         )
@@ -243,7 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
           .then(data => {
             document.getElementById("weather-temp").textContent =
               Math.round(data.current_weather.temperature) + "°C";
-  
+
             document.getElementById("weather-city").textContent =
               name.toUpperCase();
           });
@@ -257,38 +270,38 @@ document.addEventListener("DOMContentLoaded", () => {
   if (cityInput && citySuggestions) {
     cityInput.oninput = () => {
       const q = cityInput.value.trim();
-  
+
       if (q.length < 2) {
         citySuggestions.style.display = "none";
         return;
       }
-  
+
       fetch(
         `https://geocoding-api.open-meteo.com/v1/search?name=${q}&count=6`
       )
         .then(res => res.json())
         .then(data => {
           citySuggestions.innerHTML = "";
-  
+
           data.results?.forEach(c => {
             const div = document.createElement("div");
             div.className = "city-option";
             div.textContent = `${c.name}, ${c.country}`;
-  
+
             div.onclick = () => {
               loadWeather(c.name);
               citySuggestions.style.display = "none";
               cityInput.value = "";
             };
-  
+
             citySuggestions.appendChild(div);
           });
-  
+
           citySuggestions.style.display = "block";
         });
     };
   }
-  
+
 
   function showShortcutMenu(x, y, index) {
     const menu = document.getElementById("shortcutMenu");
@@ -409,7 +422,7 @@ document.addEventListener("DOMContentLoaded", () => {
       shiftButtons(width);
 
       if (sidebar === historySidebar) loadHistory();
-      
+
     } else {
       overlay?.classList.remove("show");
     }
@@ -435,7 +448,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   searchBtn?.addEventListener("click", submitSearch);
 
-  
+
 
   function updateClock() {
     const n = new Date();
@@ -444,10 +457,10 @@ document.addEventListener("DOMContentLoaded", () => {
       h24 < 12
         ? "Good Morning"
         : h24 < 17
-        ? "Good Afternoon"
-        : h24 < 21
-        ? "Good Evening"
-        : "Good Night";
+          ? "Good Afternoon"
+          : h24 < 21
+            ? "Good Evening"
+            : "Good Night";
 
     document.getElementById("time").textContent =
       `${(h24 % 12 || 12).toString().padStart(2, "0")}:` +

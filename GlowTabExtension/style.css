@@ -524,6 +524,37 @@ body {
   scrollbar-width: none;
 }
 
+
+.addhomeshortcut {
+  text-decoration: none;
+  outline: none;
+  border: none;
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 130px;
+  padding: 14px 8px;
+  border-radius: 16px;
+  background: var(--glass-03);
+  backdrop-filter: blur(10px);
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.addhomeshortcut:hover {
+  background: var(--glass-08);
+  transform: translateY(-2px);
+  cursor: pointer;
+}
+
+.plus {
+  font-size: 5em;
+}
+
 .shortcut {
   text-decoration: none;
   color: var(--text-main);
@@ -531,7 +562,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  min-width: 160px;
+  min-width: 130px;
   padding: 14px 8px;
   border-radius: 16px;
   background: var(--glass-03);
@@ -544,6 +575,7 @@ body {
 .shortcut:hover {
   background: var(--glass-08);
   transform: translateY(-2px);
+  cursor: pointer;
 }
 
 .shortcut .icon img {
@@ -888,7 +920,7 @@ body {
   margin-bottom: 8px;
   margin-top: 8px;
 
-  align-self:flex-start;
+  align-self: flex-start;
 
   display: none;
   max-height: 180px;

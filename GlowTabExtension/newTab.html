@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>New Tab</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" icon-type="images/png" href="favicon.png">
 </head>
+
 <body>
     <div class="sidebar-icons">
         <button id="settingsBtn" class="settings-btn" data-sidebar="settingsSidebar">⚙️</button>
         <button id="historyBtn" class="history-btn" data-sidebar="historySidebar">🕜</button>
         <button id="notepadBtn" class="notepad-btn" data-sidebar="notepadSidebar">🗒️</button>
     </div>
-    
+
 
     <aside id="settingsSidebar" class="settings-sidebar">
         <h2>Settings</h2>
@@ -34,7 +36,7 @@
             <button id="addShortcut">Add shortcut</button>
         </div>
         <div class="setting-item">
-            <span>Copyright 2026, Glow Tab made with love, Cool Cream</span>    
+            <span>Copyright 2026, Glow Tab made with love, Cool Cream</span>
         </div>
     </aside>
 
@@ -48,7 +50,7 @@
             <div class="h2group">
                 <h2>Notepad</h2>
                 <a href="#">(Supports Markdown)</a>
-            </div>                
+            </div>
             <button id="notesToggle" title="Toggle preview">👁️</button>
         </div>
 
@@ -59,7 +61,7 @@
     </aside>
 
     <div id="overlay" class="overlay"></div>
-    
+
     <div class="center">
         <div id="time">12:42</div>
         <div id="date">13th January 2026</div>
@@ -67,83 +69,73 @@
 
         <div class="search-container">
             <form id="searchForm">
-                <input
-                    type="text"
-                    id="searchInput"
-                    placeholder="Search the web..."
-                    autocomplete="off"
-                />
+                <input type="text" id="searchInput" placeholder="Search the web..." autocomplete="off" />
             </form>
             <button id="searchBtn">🔍</button>
-            
+
         </div>
-        
+
     </div>
 
     <main class="widgets">
 
         <section id="shortcuts" class="shortcuts">
-            
         </section>
 
-    <main class="widgets">
-        <div class="card">
-            <h3>Weather</h3>
-        
-            <div class="weather-display">
-                <div id="weather-temp">--°C</div>
-                <div id="weather-city">Loading...</div>
-            </div>
-            
-            <div class="city-input-wrapper">
-                <div id="citySuggestions" class="city-suggestions"></div>
-                <input
-                    type="text"
-                    id="cityInput"
-                    placeholder="Search city..."
-                    autocomplete="off"
-                />
-            </div>
-            
-        </div>        
-        <div class="card">
-            <div class="notes-header">
-                <h3>Today's Goal</h3>
-            </div>
-            <input type="text" id="goalInput" placeholder="Todays goal is..."></input>
-            
-        </div>
-        <div class="card">
-            <div id="display">00:00:00</div>
-            <div class="buttons">
-                <button id="startStopBtn">Start</button>
-                <button id="resetBtn">Reset</button>
-            </div>
-        </div>
-    </main>
+        <main class="widgets">
+            <div class="card">
+                <h3>Weather</h3>
 
-    <div id="shortcutModal" class="shortcut-modal hidden">
-        <div class="shortcut-modal-card">
-            <h2 id="modalTitle">Add Shortcut</h2>
+                <div class="weather-display">
+                    <div id="weather-temp">--°C</div>
+                    <div id="weather-city">Loading...</div>
+                </div>
 
-            <input id="shortcutName" placeholder="Shortcut Name..." />
-            <input id="shortcutUrl" placeholder="example.com" />
+                <div class="city-input-wrapper">
+                    <div id="citySuggestions" class="city-suggestions"></div>
+                    <input type="text" id="cityInput" placeholder="Search city..." autocomplete="off" />
+                </div>
 
-            <div class="shortcut-modal-actions">
-                <button id="cancelShortcut">Cancel</button>
-                <button id="saveShortcut" class="primary">Save</button>
+            </div>
+            <div class="card">
+                <div class="notes-header">
+                    <h3>Today's Goal</h3>
+                </div>
+                <input type="text" id="goalInput" placeholder="Todays goal is..."></input>
+
+            </div>
+            <div class="card">
+                <div id="display">00:00:00</div>
+                <div class="buttons">
+                    <button id="startStopBtn">Start</button>
+                    <button id="resetBtn">Reset</button>
+                </div>
+            </div>
+        </main>
+
+        <div id="shortcutModal" class="shortcut-modal hidden">
+            <div class="shortcut-modal-card">
+                <h2 id="modalTitle">Add Shortcut</h2>
+
+                <input id="shortcutName" placeholder="Shortcut Name..." />
+                <input id="shortcutUrl" placeholder="example.com" />
+
+                <div class="shortcut-modal-actions">
+                    <button id="cancelShortcut">Cancel</button>
+                    <button id="saveShortcut" class="primary">Save</button>
+                </div>
             </div>
         </div>
-    </div>
 
 
-    <div id="shortcutMenu" class="shortcut-menu">
-        <button id="editShortcut">Edit</button>
-        <button id="deleteShortcut">Delete</button>
-    </div>
+        <div id="shortcutMenu" class="shortcut-menu">
+            <button id="editShortcut">Edit</button>
+            <button id="deleteShortcut">Delete</button>
+        </div>
 
-    <script src="marked.min.js"></script>
-    <script src="main.js" defer></script>    
-    
+        <script src="marked.min.js"></script>
+        <script src="main.js" defer></script>
+
 </body>
+
 </html>
